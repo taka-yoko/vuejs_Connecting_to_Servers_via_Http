@@ -101,6 +101,23 @@ submit() {
 
 ## Configuring vue-resource Globally
 
+POSTリクエストとGETリクエストで指定しているURLは全く同じ。
+DRY原則に則って、この共通URLをmain.jsで以下のように設定する。
+
+```javascript
+Vue.http.options.root = 'https://vuejs-http-6e4fe.firebaseio.com/data.json';
+```
+
+これで、postやgetメソッド宣言時、URL指定を空にすると、上記のURLがデフォルトで指定されることになる。
+
+```javascript
+this.$http.get('')
+```
+
+```javascript
+this.$http.post('', this.user)
+```
+
 ## Intercepting Requests
 
 ## Intercepting Responses
