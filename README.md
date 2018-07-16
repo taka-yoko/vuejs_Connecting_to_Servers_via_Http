@@ -26,9 +26,76 @@ UdemyのVue JS - The Complete GuideのSection15 Connecting to Servers via Http -
 
 ## Accessing Http via vue-resource - Setup
 
+vue-resourceをnpm installして、main.jsで読み込む
+
+```javascript
+import VueResource from 'vue-resource';
+Vue.use(VueResource);
+```
+
 ## Creating an Application and Setting Up a Server (Firebase)
 
+Firebase上にprojectを作成
+
+権限設定。これは本番のアプリではないのでtrueにしておく。
+
+```javascript
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+```
+
+App.vueにinputフィールド、およびv-model、@clickイベントを仕込んでおく。
+
+```html
+<div class='form-group'>
+    <label>Username</label>
+    <input type='text' class='form-control' v-model="user.name">
+</div>
+<div class='form-group'>
+    <label>Mail</label>
+    <input type='text' class='form-control' v-model="user.email">
+</div>
+<button class='btn btn-primary'@click="submit">Submit!</button>
+```
+```javascript
+<script>
+    export default {
+        data() {
+            return {
+                user: {
+                    name: "",
+                    email: ""
+                }
+            };
+        },
+        methods: {
+            submit() {
+                console.log(this.user);
+            }
+        }
+    }
+</script>
+```
+
 ## POSTing Data to a Server (Sending a POST Request)
+
+firebaseにデータをpostする。
+$httpメソッドはvue-resourceをmain.jsでVue.useしているので利用できる。
+
+```javascript
+submit() {
+    this.$http.post('https://xxx.firebaseio.com/data.json', this.user)
+        .then(response => {
+            console.log(response);
+        }, error => {
+            console.log(error);
+        });
+}
+```
 
 ## GETting and Transforming Data (Sending a GET Request)
 
@@ -46,8 +113,3 @@ UdemyのVue JS - The Complete GuideのSection15 Connecting to Servers via Http -
 
 ## Understanding Template URLs
 
-##
-
-##
-
-##
