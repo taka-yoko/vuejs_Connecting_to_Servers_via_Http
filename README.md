@@ -139,7 +139,24 @@ Vue.http.interceptors.push((request, next) => {
 
 ## Intercepting Responses
 
+responseデータに対してinterceptする。
+responseデータはnextで受け取れる。今回はmethodをPUTにしたことで、
+受け取るデータの形式が変わってしまったので、これを以下のように整形する。
+(POSTのときと合わせる)
 
+```javascript
+Vue.http.interceptors.push((request, next) => {
+  console.log(request);
+  if(request.method == 'POST') {
+    request.method = 'PUT';
+  }
+  next(response => {
+    response.json = () => {
+      return {messages: response.body}
+    }
+  });
+});
+```
 
 ## Where the "resource" in vue-resource Comes From
 
