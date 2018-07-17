@@ -186,9 +186,62 @@ this.resource.save({}, this.user);
 
 ## Creating Custom Resources
 
+カスタムアクションの追加。
 
+カスタムアクションを設定し、this.$resourceの引数に追加する。
+
+```javascript
+created() {
+    const customActions = {
+        saveAlt: {method: 'POST', url: 'alternative.json'}
+    };
+    this.resource = this.$resource('data.json', {}, customActions);
+}
+```
+
+submitメソッド内で、以下のように呼ぶと、firebaseのalternativeノードに
+POSTしたデータが送られる。
+
+```javascript
+this.resource.saveAlt(this.user);
+```
 
 ## Resources vs "Normal" Http Requests
 
 ## Understanding Template URLs
 
+下記のようにハードコードされているdata.jsonのような所を
+ダイナミックに変更するにはどうすればよいか？
+
+```javascript
+this.resource = this.$resource('data.json');
+```
+
+customActions内にgetDataアクションを定義。
+
+```javascript
+const customActions = {
+                saveAlt: {method: 'POST', url: 'alternative.json'},
+                getData: {method: 'GET'}
+            };
+```
+
+this.$resourceの第一引数のURLを以下のようにcurly braceで宣言。
+
+```javascript
+this.resource = this.$resource('{node}.json', {}, customActions);
+```
+
+getDataメソッド（アクション）を呼ぶ際に、keyがnodeのオブジェクトを渡す。
+オブジェクトのvalueが、上の{node}の部分に代入される。
+
+```javascript
+this.resource.getData({node: this.node})
+```
+
+view上で、以下のようにnodeデータを動的に変更できるようにすれば、
+firebase上の好きなノードからデータを取得することができる。
+
+```javascript
+<input type='text' class='form-control' v-model="node">
+```
