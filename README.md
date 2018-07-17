@@ -160,7 +160,33 @@ Vue.http.interceptors.push((request, next) => {
 
 ## Where the "resource" in vue-resource Comes From
 
+https://github.com/pagekit/vue-resource/blob/develop/docs/resource.md
+resourceから、リクエストメソッドをマッピングしたメソッドを使うことができる。
+
+dataプロパティでresourceを設定。
+
+```javascript
+resource: {}
+```
+
+globalに使用する場合はVue.resource。
+Vue instance内で使用する場合はthis.$resource。
+
+```javascript
+created() {
+    this.resource = this.$resource('data.json');
+}
+```
+
+saveアクションは、POSTメソッドにマッピングされている。
+
+```javascript
+this.resource.save({}, this.user);
+```
+
 ## Creating Custom Resources
+
+
 
 ## Resources vs "Normal" Http Requests
 
