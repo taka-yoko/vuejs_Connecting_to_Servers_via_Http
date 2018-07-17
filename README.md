@@ -120,7 +120,26 @@ this.$http.post('', this.user)
 
 ## Intercepting Requests
 
+requestとresponseの間に入って、何かを実行するのがinterceptors。
+main.jsで以下を記述。
+POSTメソッドをPUTメソッドに変更する。
+こうすると、firebaseに送られたデータが上書きされる。
+POSTのように新規追加ではなくなる。
+nextを書かないと、そこで処理が終わってしまう。
+
+```javascript
+Vue.http.interceptors.push((request, next) => {
+  console.log(request);
+  if(request.method == 'POST') {
+    request.method = 'PUT';
+  }
+  next();
+});
+```
+
 ## Intercepting Responses
+
+
 
 ## Where the "resource" in vue-resource Comes From
 
